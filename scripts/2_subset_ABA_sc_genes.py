@@ -10,9 +10,9 @@ if len(sys.argv) != 2:
 task_id = int(sys.argv[1])
 
 # Define the paths
-input_folder = os.environ['VSC_DATA_VO_USER'] + '/ABA_data/expression_matrices/WMB-10Xv3/20230630/'
+input_folder = os.environ['VSC_DATA_VO_USER'] + '/spatial_datasets/ABA_data/expression_matrices/WMB-10Xv3/20230630/'
 #downsampled_csv = os.environ['VSC_DATA_VO_USER'] + '/ABA_data/cell_metadata_with_cluster_annotation_downsampled.csv'
-output_folder = os.environ['VSC_DATA_VO_USER'] + '/ABA_data/subset_genes/'
+output_folder = os.environ['VSC_DATA_VO_USER'] + '/spatial_datasets/ABA_data/subset_merfish_genes/'
 
 # Ensure the output directory exists
 os.makedirs(output_folder, exist_ok=True)
@@ -28,10 +28,17 @@ if task_id < 1 or task_id > len(h5ad_files):
 input_file = os.path.join(input_folder, h5ad_files[task_id-1])
 adata = ad.read_h5ad(input_file)
 
+print(input_file)
+print(adata)
+
 # Read the MERFISH genes
+merfish_genes = pd.read_csv(os.environ['VSC_DATA_VO_USER'] + "/ABA_marker_genes/data/Xenium_V1_FF_Mouse_Brain_MultiSection_Input_gene_groups.csv")
+
+print(sum(adata.var['gene_symbol'].str.lower().isin(merfish_genes.index.str.lower())))
 
 # Subset the AnnData object based on the 'cell_label' column
-subset_adata = adata[adata.obs_names.isin(cell_labels_to_keep)]
+subset_adata = adata[:, adata.var['gene_symbol'].str.lower().isin(merfish_genes.index.str.lower())]
+print(subset_adata)
 
 # Get basename of the input file
 input_basename = os.path.basename(input_file)
