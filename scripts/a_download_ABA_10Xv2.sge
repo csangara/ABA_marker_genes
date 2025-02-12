@@ -1,0 +1,9 @@
+#!/bin/bash -l
+#$ -pe serial 1
+#$ -l h_vmem=64G
+#$ -t 1-20
+#$ -e logs/
+#$ -o logs/
+
+source ~/miniconda3/bin/activate
+python /home/chananchidas/ABA_marker_genes/scripts/a_download_ABA_10Xv2.py $SGE_TASK_ID

@@ -1,0 +1,8 @@
+#!/bin/bash -l
+#$ -pe serial 1
+#$ -l h_vmem=200G
+#$ -e logs/
+#$ -o logs/
+
+source ~/miniconda3/bin/activate
+python a_download_selected_genes_mouse.py
