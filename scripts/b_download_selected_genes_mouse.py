@@ -57,5 +57,5 @@ sys.stdout.flush()
 gene_data = gene_data.astype(int)
 
 # Save the sparse DataFrame to a parquet file
-gene_data.to_parquet('/home/chananchidas/data/ABA_data/WMB-10Xv3_subset_merfish_genes.parquet')
+gene_data.to_parquet('/home/chananchidas/data/ABA_data/WMB-10X_subset_merfish_genes.parquet')
 print("Saved")
